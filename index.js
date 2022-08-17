@@ -10,7 +10,7 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import db from './utils/firebaseConfig.js';
-// import { second, hour, day, week, month } from './dataCallManager.js';
+import config from './config.json' assert { type: 'json' };
 import schedule from 'node-schedule';
 
 import dotenv from 'dotenv';
@@ -32,6 +32,7 @@ const client = new DiscordJS.Client({
 // When client is ready
 client.on('ready', () => {
   console.log('Bot ready !');
+
   dataCallManager();
 });
 
@@ -50,7 +51,7 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // Bot logging in
-client.login(process.env.TOKEN);
+client.login(config.token);
 
 // Variables
 const phrases = [
@@ -158,9 +159,9 @@ const saveUserData = async (interaction, frequency) => {
 // Data call manager to manage when to send message for who
 const dataCallManager = () => {
   // Every second call
-  schedule.scheduleJob('*/1 * * * * *', function () {
-    retrieveData('d');
-  });
+  // schedule.scheduleJob('*/1 * * * * *', function () {
+  //   retrieveData('d');
+  // });
   // Every hour call (at 0min of each hour)
   schedule.scheduleJob('0 * * * *', function () {
     retrieveData('h');
