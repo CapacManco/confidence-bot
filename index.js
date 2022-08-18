@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore';
 import db from './utils/firebaseConfig.js';
 import config from './config.json' assert { type: 'json' };
+import quotesList from './phrases.json' assert { type: 'json' };
 import schedule from 'node-schedule';
 
 import dotenv from 'dotenv';
@@ -29,10 +30,13 @@ const client = new DiscordJS.Client({
   partials: [Partials.Channel],
 });
 
+let phrases = [];
+
 // When client is ready
 client.on('ready', () => {
   console.log('Bot ready !');
 
+  phrases = quotesList.quotes;
   dataCallManager();
 });
 
@@ -52,17 +56,6 @@ client.on('interactionCreate', async (interaction) => {
 
 // Bot logging in
 client.login(config.token);
-
-// Variables
-const phrases = [
-  'You can do it, I believe in you.',
-  'If someone has done it before you, then you can.',
-  'My mom used to say : small dick spotted',
-  'You will never change yourself, you stupid',
-  'My dog is so hot',
-  "You little pussycat dolls don't you ever think that again",
-  'i would like to say "I love you" cuz it\'s the truth, but a wall is in front of us...',
-];
 
 // FUNCTIONS
 // Add user ID to database
@@ -209,7 +202,7 @@ async function sendMessage(usersId) {
   const sentence = getRandomSentence();
   usersId.map(async (user) => {
     const member = await client.users.fetch(user);
-    member.send(sentence);
+    member.send(`${sentence.quote}\n- ${sentence.author}`);
   });
 }
 
@@ -218,7 +211,6 @@ async function sendMessage(usersId) {
 const getRandomSentence = () => {
   const index = Math.floor(Math.random() * phrases.length);
   const sentence = phrases[index];
-  phrases.splice(index, 1);
 
   return sentence;
 };
