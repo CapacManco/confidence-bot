@@ -4,9 +4,6 @@ const { clientId, guildId, token } = require('./config.json');
 
 const commands = [
   new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('Replies with pong!'),
-  new SlashCommandBuilder()
     .setName('unsubscribe')
     .setDescription('Unsubscribe from The Confidence Bot'),
   new SlashCommandBuilder()
