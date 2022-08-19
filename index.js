@@ -51,6 +51,10 @@ client.on('interactionCreate', async (interaction) => {
   } else if (commandName === 'subscribe') {
     let option = interaction.options.get('frequency');
     saveUserData(interaction, option.value);
+  } else if (commandName === 'help') {
+    await interaction.reply(
+      `/subscribe frequency : to subscribe to the bat at a 1 message per frequency (hour, day, week or month)\n/unsubscribe : to unsubscribe from the bot`
+    );
   }
 });
 
